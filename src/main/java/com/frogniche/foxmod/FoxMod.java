@@ -49,67 +49,9 @@ public class FoxMod
         // Add to the constructor
         ModItems.register(modEventBus);
         EntityInit.ENTITIES.register(modEventBus);
-        modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::registerEntityAttributes);
-        modEventBus.addListener(this::clientSetup);
         GeckoLib.initialize();
-
-        modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
 
 
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-
-
-    }
-    private void clientSetup(FMLClientSetupEvent event) {
-
-//Dungeons Mobs
-        EntityRenderers.register(EntityInit.KING_PAWS.get(), KingPawsRenderer::new);
-
-        EntityRenderers.register(EntityInit.SEEKER.get(), SeekerRenderer::new);
-//Horde of the spore
-        EntityRenderers.register(EntityInit.DEVOURER.get(), makeRenderer(new DevourerModel()));
-
-        EntityRenderers.register(EntityInit.UNBREAKABLE.get(), makeRenderer(new UnbreakableModel()));
-
-        EntityRenderers.register(EntityInit.SPORE_MEDIC.get(), makeRenderer(new SporeMedicModel()));
-    }
-    private void registerEntityAttributes(EntityAttributeCreationEvent event){
-//dungeons mobs
-        event.put(EntityInit.KING_PAWS.get(), KingPawsEntity.createAttributes());
-
-        event.put(EntityInit.SEEKER.get(), SeekerEntity.createAttributes());
-        //spore horde
-        event.put(EntityInit.DEVOURER.get(), DevourerEntity.makeAttributes());
-
-        event.put(EntityInit.UNBREAKABLE.get(), UnbreakableEntity.createAttributes());
-
-
-        event.put(EntityInit.SPORE_MEDIC.get(), SporeMedicEntity.createAttributes());
-
-    }
-
-    public static <T extends LivingEntity & IAnimatable> EntityRendererProvider<T> makeRenderer(AnimatedGeoModel<T> model){
-        return m -> new HelperGeoRenderer<>(m, model);
-    }
-
-    public static class HelperGeoRenderer<T extends LivingEntity & IAnimatable> extends GeoEntityRenderer<T>{
-
-        public HelperGeoRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> modelProvider) {
-            super(renderManager, modelProvider);
-        }
-    }
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ClientModEvents
-    {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
     }
 }
